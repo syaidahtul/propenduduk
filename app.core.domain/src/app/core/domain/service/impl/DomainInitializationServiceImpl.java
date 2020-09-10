@@ -20,8 +20,6 @@ import app.core.domain.service.DomainInitializationService;
 @Transactional
 public class DomainInitializationServiceImpl implements DomainInitializationService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DomainInitializationServiceImpl.class);
-
 	@Autowired
 	private SessionFactory sessionFactory;
 	

@@ -53,13 +53,13 @@ public class UserDetailServiceImpl implements UserDetailService {
 			user.setPassword((String) row[3]);
 			user.setActiveFlag(((Boolean) row[4]) ? 1 : 0);
 			user.setPwdUpdDate((Date) row[5]);
-			user.setPwdExpiryDays(((BigInteger) row[6]).intValue());
+			user.setPwdExpiryDays(((Long) row[6]).intValue());
 			user.setForceChangePwdFlag(((Boolean) row[7]) ? 1 : 0);
-			user.setInvalidLoginCount(((BigInteger) row[8]).intValue());
-			user.setMaxInvalidLoginCount(((BigInteger) row[9]).intValue());
+			user.setInvalidLoginCount(((Long) row[8]).intValue());
+			user.setMaxInvalidLoginCount(((Long) row[9]).intValue());
 			user.setLastAccessTime((Date) row[10]);
 			user.setConnectedFlag(((Boolean) row[11]) ? 1 : 0);
-			user.setSessionInactiveTimeout(((BigInteger) row[12]).intValue());
+			user.setSessionInactiveTimeout(((Long) row[12]).intValue());
 			users.add(user);
 		}
 
