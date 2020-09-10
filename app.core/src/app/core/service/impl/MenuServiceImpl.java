@@ -39,17 +39,17 @@ public class MenuServiceImpl implements MenuService {
 	public void getMenu(UserPrincipal userPrincipal, Locale locale) {
 		if (userPrincipal != null) {
 			StringBuffer sql = new StringBuffer();
-			sql.append("SELECT TBL.id, TBL.parent_id, TBL.name, TBL.path ");
+			sql.append("SELECT TBL.id, TBL.parentMenuItem, TBL.name, TBL.path ");
 			sql.append(
-					"FROM (SELECT m.id, m.parent_id, m.name, m.parent_flag, m.sort_order, null AS path, null AS role_id");
-			sql.append(" FROM MENU_ITEM m WHERE m.FUNCTION_CODE IS NULL");
+					"FROM (SELECT m.id, m.parentMenuItem, m.name, m.parentFlag, m.sortOrder, null AS path, null AS role_id");
+			sql.append(" FROM MENU_ITEM m WHERE m.function IS NULL");
 			sql.append(" UNION");
-			sql.append(" SELECT m.id, m.parent_id, m.name, m.parent_flag, m.sort_order, f.path, r.role_id");
-			sql.append(" FROM menu_item m LEFT JOIN app_function f ON m.function_code = f.code");
-			sql.append(" INNER JOIN ROLE_FUNCTION r ON r.function_code = f.code");
+			sql.append(" SELECT m.id, m.parentMenuItem, m.name, m.parentFlag, m.sortOrder, f.path, r.role_id");
+			sql.append(" FROM menu_item m LEFT JOIN app_function f ON m.function = f.code");
+			sql.append(" INNER JOIN ROLE_FUNCTION r ON r.function = f.code");
 			sql.append(" WHERE r.role_id = ?) AS TBL ");
-			sql.append("WHERE TBL.parent_id IS NOT NULL ");
-			sql.append("ORDER BY TBL.parent_id, TBL.sort_order");
+			sql.append("WHERE TBL.parentMenuItem IS NOT NULL ");
+			sql.append("ORDER BY TBL.parentMenuItem, TBL.sortOrder");
 
 			Session session = sessionFactory.getCurrentSession();
 			Query query = session.createQuery(sql.toString()).setParameter(0,
@@ -76,7 +76,7 @@ public class MenuServiceImpl implements MenuService {
 	protected String constructMenuMap(List<Object[]> resultList, UserPrincipal userPrincipal, Locale locale) {
 		/**
 		 * <pre>
-		 * ID,      PARENT_ID,      NAME,       PATH
+		 * ID,      parentMenuItem,      NAME,       PATH
 		 * 1        null            HOME        null
 		 * 2        1               MENU 1      null
 		 * 3        1               MENU 2      null
@@ -272,41 +272,43 @@ public class MenuServiceImpl implements MenuService {
 									+ "], SORT ORDER [" + item.sortOrder() + "]");
 						}
 
-						query = session.createQuery("SELECT id FROM menu_item WHERE id = :id").setParameter("id",
-								item.id());
+						query = session.createQuery("SELECT id FROM MenuItem WHERE id = :id").setParameter("id", item.id());
 						if (query.uniqueResult() != null) {
-							query = session.createQuery(
-									"UPDATE menu_item SET name = :name, description = :description, function_code = :function_code, "
-											+ "parent_flag = :parent_flag, parent_id = :parent_id, sort_order = :sort_order WHERE id = :id");
+							query = session.createNativeQuery(
+									"UPDATE menu_item SET name = :name, description = :description, function_code = :function, "
+											+ "parent_flag = :parentFlag, parent_id = :parentMenuItem, sort_order = :sortOrder WHERE id = :id");
 							query.setParameter("name", item.name(), StandardBasicTypes.STRING)
 									.setParameter("description", item.description(), StandardBasicTypes.STRING)
-									.setParameter("function_code",
+									.setParameter("function",
 											StringUtils.isEmpty(item.function()) ? null : item.function(),
 											StandardBasicTypes.STRING)
-									.setParameter("parent_flag", item.isParent(), StandardBasicTypes.BOOLEAN)
-									.setParameter("parent_id", item.parentId() == -1L ? null : item.parentId(),
+									.setParameter("parentFlag", item.isParent(), StandardBasicTypes.BOOLEAN)
+									.setParameter("parentMenuItem", item.parentId() == -1L ? null : item.parentId(),
 											StandardBasicTypes.LONG)
-									.setParameter("sort_order", item.sortOrder(), StandardBasicTypes.INTEGER)
+									.setParameter("sortOrder", item.sortOrder(), StandardBasicTypes.INTEGER)
 									.setParameter("id", item.id(), StandardBasicTypes.LONG);
 							rowUpdated = query.executeUpdate();
 							if (LOGGER.isDebugEnabled()) {
 								LOGGER.debug("Update menu_item [" + item.id() + "], row updated [" + rowUpdated + "]");
 							}
 						} else {
-							query = session.createQuery(
+							
+							query = session.createNativeQuery(
 									"INSERT INTO menu_item (id, name, description, function_code, parent_flag, "
-											+ "parent_id, sort_order) VALUES (:id, :name, :description, :function_code, :parent_flag, "
-											+ ":parent_id, :sort_order)");
+											+ "parent_id, sort_order) VALUES (:id, :name, :description, :function, :parentFlag, "
+											+ ":parentMenuItem, :sortOrder)");
+							
 							query.setParameter("id", item.id(), StandardBasicTypes.LONG)
 									.setParameter("name", item.name(), StandardBasicTypes.STRING)
 									.setParameter("description", item.description(), StandardBasicTypes.STRING)
-									.setParameter("function_code",
+									.setParameter("function",
 											StringUtils.isEmpty(item.function()) ? null : item.function(),
 											StandardBasicTypes.STRING)
-									.setParameter("parent_flag", item.isParent(), StandardBasicTypes.BOOLEAN)
-									.setParameter("parent_id", item.parentId() == -1L ? null : item.parentId(),
+									.setParameter("parentFlag", item.isParent(), StandardBasicTypes.BOOLEAN)
+									.setParameter("parentMenuItem", item.parentId() == -1L ? null : item.parentId(),
 											StandardBasicTypes.LONG)
-									.setParameter("sort_order", item.sortOrder(), StandardBasicTypes.INTEGER);
+									.setParameter("sortOrder", item.sortOrder(), StandardBasicTypes.INTEGER);
+							
 							rowUpdated = query.executeUpdate();
 							if (LOGGER.isDebugEnabled()) {
 								LOGGER.debug("Insert menu_item [" + item.id() + "], row inserted [" + rowUpdated + "]");

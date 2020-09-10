@@ -11,8 +11,9 @@
 	<bean class="app.core.spring.EntitiesContributor">
 		<property name="packages">
 			<set>
-				<value>app.core.usermgmt.model</value>
+				<value>app.core.domain.model</value>
 			</set>
 		</property>
 	</bean>
+	<context:component-scan base-package="app.core.domain" />
 </beans>

@@ -11,10 +11,10 @@
 	<bean class="app.core.spring.EntitiesContributor">
 		<property name="packages">
 			<set>
-				<value>module.setup.model</value>
+				<value>app.core.domain.model</value>
 			</set>
 		</property>
 	</bean>
-
-	<context:component-scan base-package="module.setup" />
+	
+	<context:component-scan base-package="app.core.domain" />
 </beans>

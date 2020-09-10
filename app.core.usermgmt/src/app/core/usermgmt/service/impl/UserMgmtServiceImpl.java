@@ -5,12 +5,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Root;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.FlushMode;
 import org.hibernate.NonUniqueResultException;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +25,15 @@ import com.github.dandelion.datatables.core.ajax.ColumnDef;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 
-import app.core.domain.setup.model.ContextVarType;
-import app.core.domain.setup.model.Function;
-import app.core.domain.setup.model.Role;
-import app.core.domain.setup.model.RoleFunction;
-import app.core.domain.setup.model.RoleFunctionPK;
-import app.core.domain.setup.model.User;
-import app.core.domain.setup.model.UserContextVar;
-import app.core.domain.setup.model.UserRole;
-import app.core.domain.setup.model.UserRoleId;
+import app.core.domain.model.ContextVarType;
+import app.core.domain.model.Function;
+import app.core.domain.model.Role;
+import app.core.domain.model.RoleFunction;
+import app.core.domain.model.RoleFunctionPK;
+import app.core.domain.model.User;
+import app.core.domain.model.UserContextVar;
+import app.core.domain.model.UserRole;
+import app.core.domain.model.UserRoleId;
 import app.core.dto.Entity2DTOMapper;
 import app.core.exception.BaseApplicationException;
 import app.core.model.EntityBase;
@@ -79,9 +83,18 @@ public class UserMgmtServiceImpl extends AbstractServiceImpl implements UserMgmt
 	@Transactional
 	public void resetConnectedFlag() {
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createNativeQuery("UPDATE app_user SET connected_flag = :connected_flag");
-		query.setParameter("connected_flag", Boolean.FALSE);
-		query.executeUpdate();
+		
+		CriteriaBuilder cb = session.getCriteriaBuilder();
+
+        // create update
+        CriteriaUpdate<User> update = cb.createCriteriaUpdate(User.class);
+
+        // set the root class
+        Root e = update.from(User.class);
+
+        // set update and where clause
+        update.set("connectedFlag", false);
+        session.createQuery(update).executeUpdate();
 	}
 
 	@Transactional(readOnly = true)

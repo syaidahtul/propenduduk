@@ -51,7 +51,7 @@ public class EntityReference extends EntityBase {
 		this.name = name;
 	}
 
-	@Column(name = "SORT_ORDER")
+	@Column(name = "sort_order")
 	public Long getSortOrder() {
 		return sortOrder;
 	}

@@ -2,9 +2,9 @@ package web.core.usermgmt.model;
 
 import java.util.List;
 
-import app.core.domain.setup.model.Function;
-import app.core.domain.setup.model.Role;
-import app.core.domain.setup.model.RoleFunction;
+import app.core.domain.model.Function;
+import app.core.domain.model.Role;
+import app.core.domain.model.RoleFunction;
 import web.core.model.AbstractForm;
 
 public class RoleFunctionForm extends AbstractForm {

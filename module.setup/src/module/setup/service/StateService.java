@@ -2,7 +2,7 @@ package module.setup.service;
 
 import java.util.List;
 
-import app.core.domain.setup.model.State;
+import app.core.domain.model.State;
 import module.setup.dto.StateDTO;
 
 public interface StateService {

@@ -2,7 +2,7 @@ package app.core.menumgmt.dto;
 
 import java.util.List;
 
-import app.core.domain.setup.model.MenuItem;
+import app.core.domain.model.MenuItem;
 import app.core.dto.DTOBase;
 
 public class MenuItemDTO extends DTOBase {

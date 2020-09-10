@@ -30,7 +30,7 @@ public class EntityCodeActive extends EntityCode {
 		super(code);
 	}
 
-	@Column(name = "ACTIVE_FLAG", length = 20)
+	@Column(name = "is_active")
 	public Boolean getActiveFlag() {
 		return this.activeFlag;
 	}

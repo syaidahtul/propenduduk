@@ -50,6 +50,7 @@ SELECT:focus,INPUT:focus {
 
 .form-horizontal .control-label {
 	font-size: 12px;
+	align-self: flex-end !important;
 }
 
 .bg-primary, .round-corner-bg-primary {
@@ -110,9 +111,15 @@ SELECT:focus,INPUT:focus {
 	color: red;
 }
 
+.mandatory::after .mandatory::before {
+	content: "&#42;";
+	color: red;
+}
+
 .errorblock {
 	color: #ff0000;
 	background-color: #ffEEEE;
+	border-radius: 10px;
 	border: 2px solid #ff0000;
 	padding: 8px;
 	margin: 16px;
@@ -179,4 +186,18 @@ hr {
 	padding-right: 15px;
 	padding-left: 15px;
 	text-align: center;
+}
+
+label .control-label {
+	text-align: right;
+	vertical-align: middle;
+}
+
+.card-header .title {
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.card-footer btn {
+	align-content: right;
 }

@@ -1,6 +1,6 @@
 package app.core.usermgmt.dto;
 
-import app.core.domain.setup.model.RoleFunctionPK;
+import app.core.domain.model.RoleFunctionPK;
 import app.core.dto.DTOBase;
 
 public class RoleFunctionDTO extends DTOBase {

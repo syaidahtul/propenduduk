@@ -26,7 +26,7 @@ import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 import com.github.dandelion.datatables.extras.spring3.ajax.DatatablesParams;
 
-import app.core.domain.setup.model.MenuItem;
+import app.core.domain.model.MenuItem;
 import app.core.exception.BaseApplicationException;
 import app.core.menumgmt.dto.MenuItemDTO;
 import app.core.menumgmt.service.MenuMgmtService;

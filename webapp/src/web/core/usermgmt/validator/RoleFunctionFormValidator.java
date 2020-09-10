@@ -4,8 +4,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import app.core.domain.setup.model.RoleFunction;
-import app.core.domain.setup.model.RoleFunctionPK;
+import app.core.domain.model.RoleFunction;
+import app.core.domain.model.RoleFunctionPK;
 import app.core.usermgmt.service.UserMgmtService;
 import web.core.usermgmt.model.RoleFunctionForm;
 

@@ -4,7 +4,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import app.core.domain.setup.model.MenuItem;
+import app.core.domain.model.MenuItem;
 import app.core.menumgmt.service.MenuMgmtService;
 import web.core.menumgmt.model.MenuItemForm;
 

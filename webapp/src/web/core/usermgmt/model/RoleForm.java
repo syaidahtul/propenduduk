@@ -1,6 +1,6 @@
 package web.core.usermgmt.model;
 
-import app.core.domain.setup.model.Role;
+import app.core.domain.model.Role;
 import web.core.model.AbstractForm;
 
 public class RoleForm extends AbstractForm  {

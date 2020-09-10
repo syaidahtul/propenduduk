@@ -4,7 +4,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import app.core.domain.setup.model.Role;
+import app.core.domain.model.Role;
 import app.core.usermgmt.service.UserMgmtService;
 import web.core.usermgmt.model.RoleForm;
 

@@ -12,76 +12,25 @@ import org.springframework.util.StringUtils;
 import app.core.annotation.Menu;
 import app.core.annotation.MenuItem;
 import app.core.annotation.Permission;
-import app.core.domain.setup.model.Function;
-import app.core.domain.setup.model.Role;
-import app.core.domain.setup.model.RoleFunction;
-import app.core.domain.setup.model.RoleFunctionPK;
-import app.core.domain.setup.model.User;
-import app.core.domain.setup.model.UserRole;
-import app.core.domain.setup.model.UserRoleId;
+import app.core.domain.model.Function;
+import app.core.domain.model.Role;
+import app.core.domain.model.RoleFunction;
+import app.core.domain.model.RoleFunctionPK;
+import app.core.domain.model.User;
+import app.core.domain.model.UserRole;
+import app.core.domain.model.UserRoleId;
 import app.core.registry.Module;
 import app.core.usermgmt.service.UserMgmtService;
 import app.core.utils.AppConstant;
 import app.core.utils.MD5Utils;
 
 @Component("UserMgmtModule")
-@Menu({ @MenuItem(id = 2000L, sortOrder = 20, isParent = true, parentId = AppConstant.MENU_HOME_ID, name = "User Management", description = "User Setup", function = ""),
-		@MenuItem(id = 2100L, sortOrder = 10, isParent = true, parentId = 2000L, name = "User Management", description = "User Setup", function = ""),
-		@MenuItem(id = 2110L, sortOrder = 10, isParent = false, parentId = 2100L, name = "User Listing", description = "User Listing", function = UserMgmtModule.FUNC_USER_LIST),
-		@MenuItem(id = 2120L, sortOrder = 20, isParent = false, parentId = 2100L, name = "Role Listing", description = "Role Listing", function = UserMgmtModule.USER_ROLE_LIST),
-		@MenuItem(id = 2130L, sortOrder = 30, isParent = false, parentId = 2100L, name = "Role Function Listing", description = "Role Function Listing", function = UserMgmtModule.FUNC_ROLE_FUNCTION_LIST),
-		@MenuItem(id = 2200L, sortOrder = 20, isParent = false, parentId = 2000L, name = "Change Role", description = "Change Role", function = UserMgmtModule.FUNC_CHANGE_ROLE),
-		@MenuItem(id = 2300L, sortOrder = 30, isParent = false, parentId = 2000L, name = "Change Password", description = "Change Password", function = UserMgmtModule.FUNC_CHANGE_PASSWORD)})
+@Menu({ @MenuItem(id = 2000L, sortOrder = 20, isParent = true, parentId = AppConstant.MENU_HOME_ID, name = "User Management", description = "User Setup", function = "")})
 public class UserMgmtModule extends Module {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserMgmtModule.class);
 
 	@Permission(name = "Secured Landing Page", path = "/secured")
 	public static final String FUNC_LANDING = "CU00.LANDING";
-
-	@Permission(name = "Change Role", path = "/secured/usermgmt/changerole")
-	public static final String FUNC_CHANGE_ROLE = "CU01.CHANGE_ROLE";
-
-	@Permission(name = "Change Password", path = "/secured/usermgmt/changepasswd")
-	public static final String FUNC_CHANGE_PASSWORD = "CU01.CHANGE_PASSWORD";
-	
-	@Permission(name = "Role Function List", path = "/secured/usermgmt/rolefunction")
-	public static final String FUNC_ROLE_FUNCTION_LIST = "CU01.ROLE_FUNCTION_LIST";
-
-	@Permission(name = "Role Function Grid", path = "/secured/usermgmt/rolefunction/rolefunctiongrid")
-	public static final String FUNC_ROLE_FUNCTION_GRID = "CU01.ROLE_FUNCTION_GRID";
-
-	@Permission(name = "Role Function New", path = "/secured/usermgmt/rolefunction/new")
-	public static final String FUNC_ROLE_FUNCTION_NEW = "CU01.ROLE_FUNCTION_NEW";
-
-	@Permission(name = "Role Function Edit", path = "/secured/usermgmt/rolefunction/edit")
-	public static final String FUNC_ROLE_FUNCTION_EDIT = "CU01.ROLE_FUNCTION_EDIT";
-
-	@Permission(name = "User List", path = "/secured/usermgmt/user")
-	public static final String FUNC_USER_LIST = "CU02.USER_LIST";
-
-	@Permission(name = "User Grid", path = "/secured/usermgmt/user/usergrid")
-	public static final String FUNC_USER_GRID = "CU02.USER_GRID";
-
-	@Permission(name = "User New", path = "/secured/usermgmt/user/new")
-	public static final String FUNC_USER_NEW = "CU02.USER_NEW";
-
-	@Permission(name = "User Edit", path = "/secured/usermgmt/user/edit")
-	public static final String FUNC_USER_EDIT = "CU02.USER_EDIT";
-	// Chuyen changed here: "/secured/usermgmt/role/role"
-	@Permission(name = "User Role List", path = "/secured/usermgmt/role")
-	public static final String USER_ROLE_LIST = "CU04.USER_ROLE_LIST";
-
-	@Permission(name = "User Role Grid", path = "/secured/usermgmt/role/rolegrid")
-	public static final String USER_ROLE_GRID = "CU04.USER_ROLE_GRID";
-
-	@Permission(name = "User Role New", path = "/secured/usermgmt/role/new")
-	public static final String USER_ROLE_NEW = "CU04.USER_ROLE_NEW";
-
-	@Permission(name = "User Role Edit", path = "/secured/usermgmt/role/edit")
-	public static final String USER_ROLE_EDIT = "CU04.USER_ROLE_EDIT";
-
-	@Permission(name = "User Role Change", path = "")
-	public static final String USER_ROLE_CHANGE = "CU05.USER_ROLE_CHANGE";
 	
 	@Autowired
 	private UserMgmtService userMgmtService;

@@ -35,9 +35,9 @@ public class UserDetailServiceImpl implements UserDetailService {
 	@Transactional(readOnly = true)
 	public UserPrincipal getUserByUserName(String username) {
 		StringBuffer sql = new StringBuffer();
-		sql.append("SELECT au.id, au.username, au.salt, au.password, au.active_flag, au.pwd_upddate, au.pwd_expiry_days, ");
-		sql.append("au.force_change_pwd_flag, au.invalid_login_count, au.max_invalid_login_count, ");
-		sql.append("au.last_access_time, au.connected_flag, au.session_timeout_minutes FROM User au ");
+		sql.append("SELECT au.id, au.username, au.salt, au.password, au.activeFlag, au.pwdUpdateDate, au.pwdExpiryDays, ");
+		sql.append("au.forceChangePwdFlag, au.invalidLoginCount, au.maxInvalidLoginCount, ");
+		sql.append("au.lastAccessTime, au.connectedFlag, au.sessionTimeoutMinutes FROM User au ");
 		sql.append("WHERE username = :username");
 
 		Session session = sessionFactory.getCurrentSession();
@@ -47,7 +47,7 @@ public class UserDetailServiceImpl implements UserDetailService {
 		List<UserPrincipal> users = new ArrayList<UserPrincipal>();
 		for (Object[] row : result) {
 			UserPrincipal user = new UserPrincipal();
-			user.setUserId(((BigInteger) row[0]).longValue());
+			user.setUserId(((Long) row[0]));
 			user.setUsername((String) row[1]);
 			user.setSalt((String) row[2]);
 			user.setPassword((String) row[3]);
@@ -141,7 +141,7 @@ public class UserDetailServiceImpl implements UserDetailService {
 			// the hibernate intercepter will not update the UPDDATE and UPDUSER
 			// column,
 			// therefore we need to update manually
-			sql.append("UPDATE app_user SET upddate = :upddate, upduser = id");
+			sql.append("UPDATE User SET upddate = :upddate, upduser = id");
 			parameters.put("upddate", new Timestamp(System.currentTimeMillis()));
 
 			if (e == null) {
@@ -201,7 +201,7 @@ public class UserDetailServiceImpl implements UserDetailService {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			StringBuffer sql = new StringBuffer();
 
-			sql.append("UPDATE app_user SET upddate = :upddate, upduser = :id, connected_flag = :connected_flag")
+			sql.append("UPDATE User SET upddate = :upddate, upduser = :id, connected_flag = :connected_flag")
 					.append(", session_id = null where id = :id");
 			parameters.put("upddate", new Timestamp(System.currentTimeMillis()));
 			parameters.put("connected_flag", Boolean.FALSE);
@@ -239,7 +239,7 @@ public class UserDetailServiceImpl implements UserDetailService {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		StringBuffer sql = new StringBuffer();
 
-		sql.append("UPDATE app_user SET upddate = :upddate, connected_flag = :connected_flag")
+		sql.append("UPDATE User SET upddate = :upddate, connected_flag = :connected_flag")
 				.append(", session_id = null where session_id = :session_id");
 		parameters.put("upddate", new Timestamp(System.currentTimeMillis()));
 		parameters.put("connected_flag", Boolean.FALSE);

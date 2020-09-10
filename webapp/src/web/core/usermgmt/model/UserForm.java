@@ -3,9 +3,9 @@ package web.core.usermgmt.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.core.domain.setup.model.Role;
-import app.core.domain.setup.model.User;
-import app.core.domain.setup.model.UserRole;
+import app.core.domain.model.Role;
+import app.core.domain.model.User;
+import app.core.domain.model.UserRole;
 import web.core.model.AbstractForm;
 
 public class UserForm extends AbstractForm {

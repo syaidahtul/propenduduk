@@ -28,12 +28,12 @@ import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 import com.github.dandelion.datatables.extras.spring3.ajax.DatatablesParams;
 
-import app.core.domain.setup.model.Function;
-import app.core.domain.setup.model.Role;
-import app.core.domain.setup.model.RoleFunction;
-import app.core.domain.setup.model.RoleFunctionPK;
-import app.core.domain.setup.model.User;
-import app.core.domain.setup.model.UserRole;
+import app.core.domain.model.Function;
+import app.core.domain.model.Role;
+import app.core.domain.model.RoleFunction;
+import app.core.domain.model.RoleFunctionPK;
+import app.core.domain.model.User;
+import app.core.domain.model.UserRole;
 import app.core.exception.BaseApplicationException;
 import app.core.security.UserPrincipal;
 import app.core.service.FunctionService;

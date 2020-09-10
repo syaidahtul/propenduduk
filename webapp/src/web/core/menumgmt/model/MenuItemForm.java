@@ -2,8 +2,8 @@ package web.core.menumgmt.model;
 
 import java.util.List;
 
-import app.core.domain.setup.model.Function;
-import app.core.domain.setup.model.MenuItem;
+import app.core.domain.model.Function;
+import app.core.domain.model.MenuItem;
 import web.core.model.AbstractForm;
 
 public class MenuItemForm extends AbstractForm {

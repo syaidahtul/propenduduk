@@ -178,6 +178,13 @@
 			<version>${version.jstl}</version>
 			<scope>provided</scope>
 		</dependency>
+	
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${version.org.lombok}</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<!-- Application Modules -->
 		<dependency>

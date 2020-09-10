@@ -3,9 +3,9 @@ package app.core.service.impl;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +41,12 @@ public class FunctionServiceImpl implements FunctionService {
 					logger.info("Function found in module [" + module.getModuleName() + "], code = [" + code
 							+ "], name = [" + permission.name() + "], path = [" + permission.path() + "]");
 
-					query = session.createQuery("SELECT f.code FROM app_function f WHERE f.code = :code");
+					query = session.createQuery("SELECT f.code FROM Function f WHERE f.code = :code");
 					query.setParameter("code", code);
 					if (query.uniqueResult() != null) {
 						// Function found in database, update it
 						query = session
-								.createQuery("UPDATE app_function SET name = :name, path = :path WHERE code = :code");
+								.createNativeQuery("UPDATE app_function SET name = :name, path = :path WHERE code = :code");
 						query.setParameter("name", permission.name()).setParameter("path", permission.path())
 								.setParameter("code", code);
 						rowUpdated = query.executeUpdate();
@@ -55,10 +55,10 @@ public class FunctionServiceImpl implements FunctionService {
 						}
 					} else {
 						// Function not found, insert a new function
-						query = session
-								.createQuery("INSERT INTO app_function (code, name, description, path) VALUES (:code, :name, :description, :path)");
-						query.setParameter("code", code).setParameter("name", permission.name())
-								.setParameter("description", permission.name()).setParameter("path", permission.path());
+						query = session.createNativeQuery(
+								"INSERT INTO app_function (code, name, description, path) values (:code, :name, :description, :path)");
+							query.setParameter("code", code).setParameter("name", permission.name());
+							query.setParameter("description", permission.name()).setParameter("path", permission.path());
 						rowUpdated = query.executeUpdate();
 						if (logger.isDebugEnabled()) {
 							logger.debug("Insert function [" + code + "], row updated [" + rowUpdated + "]");

@@ -13,8 +13,7 @@
 	</appender>
 
 	<!-- Application log file appender -->
-	<appender name="LOGFILE"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="LOGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">	
 			<pattern> %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
 		</encoder>
@@ -26,18 +25,18 @@
 		</rollingPolicy>
 		<triggeringPolicy
 			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-			<MaxFileSize>10MB</MaxFileSize>
+			<MaxFileSize>100MB</MaxFileSize>
 		</triggeringPolicy>
 	</appender>
 
 
 	<logger name="org.springframework" level="WARN" />
-	<logger name="org.springframework.security" level="WARN" />
+	<logger name="org.springframework.security" level="ERROR" />
 	<logger name="org.springframework.web.servlet.i18n" level = "WARN" />
 	<logger name="org.hibernate.type" level="WARN" />
 	<logger name="org.hibernate" level="WARN" />
 	<logger name="com.github.dandelion" level="WARN" />
-	<logger name="app.core.security.auth.CustomListFilter" level="WARN" />
+	<logger name="app.core.security.auth.CustomListFilter" level="ERROR" />
 	
 	<!-- Application log level -->
 	<logger name="app" level="DEBUG" />

@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.dandelion.datatables.core.ajax.DataSet;
 import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 
-import app.core.domain.setup.model.Function;
-import app.core.domain.setup.model.MenuItem;
+import app.core.domain.model.Function;
+import app.core.domain.model.MenuItem;
 import app.core.dto.Entity2DTOMapper;
 import app.core.exception.BaseApplicationException;
 import app.core.menumgmt.dto.MenuItemDTO;

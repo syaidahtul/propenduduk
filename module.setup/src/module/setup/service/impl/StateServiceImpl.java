@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import app.core.domain.setup.model.State;
+import app.core.domain.model.State;
 import module.setup.dto.StateDTO;
 import module.setup.service.StateService;
 
