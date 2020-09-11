@@ -15,6 +15,12 @@
 			<artifactId>app.core.menumgmt</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>PPNS</groupId>
+			<artifactId>module.profile</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>PPNS</groupId>

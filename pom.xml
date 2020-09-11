@@ -13,6 +13,7 @@
 		<module>app.core.domain</module>
 		<module>app.core.menumgmt</module>
 		<module>app.core.usermgmt</module>
+		<module>module.profile</module>
 		<module>module.setup</module>
 		<module>webapp</module>
 		<module>portalEAR</module>

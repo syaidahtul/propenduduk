@@ -16,5 +16,5 @@
 		</property>
 	</bean>
 	
-	<context:component-scan base-package="app.core.domain" />
+	<context:component-scan base-package="module" />
 </beans>
