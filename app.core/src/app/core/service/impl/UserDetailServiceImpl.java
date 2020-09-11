@@ -25,6 +25,7 @@ import app.core.security.UserPrincipal;
 import app.core.service.UserDetailService;
 
 @Service
+@SuppressWarnings("unchecked")
 public class UserDetailServiceImpl implements UserDetailService {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserDetailServiceImpl.class);
@@ -73,11 +74,10 @@ public class UserDetailServiceImpl implements UserDetailService {
 	@Transactional(readOnly = true)
 	public List<Long> getRoleIdByUserId(Long userId) {
 		StringBuffer sql = new StringBuffer();
-		sql.append("SELECT role_id FROM user_role WHERE user_id = ?");
+		sql.append("SELECT role_id FROM user_role WHERE user_id = :userId");
 
 		Session session = sessionFactory.getCurrentSession();
-		Query<Object[]> query = session.createQuery(sql.toString()).setParameter(0, userId);
-		@SuppressWarnings("rawtypes")
+		Query<Object[]> query = session.createNativeQuery(sql.toString()).setParameter("userId", userId);
 		List<Object[]> result = query.list();
 
 		List<Long> roleIds = new ArrayList<Long>();
@@ -94,11 +94,10 @@ public class UserDetailServiceImpl implements UserDetailService {
 		sql.append("SELECT DISTINCT ucv.value ");
 		sql.append(
 				"FROM user_context_var ucv LEFT JOIN context_var_type cvt ON ucv.context_var_type_id = cvt.ID AND cvt.name = 'LAST_ROLE_ID'");
-		sql.append("WHERE ucv.USER_ID = ?");
+		sql.append("WHERE ucv.USER_ID = :userId");
 
 		Session session = sessionFactory.getCurrentSession();
-		Query<Object[]> query = session.createQuery(sql.toString()).setParameter(0, userId);
-		@SuppressWarnings("rawtypes")
+		Query<Object[]> query = session.createNativeQuery(sql.toString()).setParameter("userId", userId);
 		List<Object[]> result = query.list();
 
 		// No last role found
@@ -112,9 +111,9 @@ public class UserDetailServiceImpl implements UserDetailService {
 				// User has been assigned with roles, take the first role and
 				// save it to the USER_CONTEXT_VAR
 				int row = session
-						.createQuery(
-								"INSERT INTO user_context_var(context_var_type_id, user_id, value) VALUES ((SELECT id FROM context_var_type WHERE name = 'LAST_ROLE_ID'), ?, ?)")
-						.setParameter(0, userId).setParameter(1, roleId).executeUpdate();
+						.createNativeQuery(
+								"INSERT INTO user_context_var(context_var_type_id, user_id, value) VALUES ((SELECT id FROM context_var_type WHERE name = 'LAST_ROLE_ID'), :userId, :roleId)")
+						.setParameter("userId", userId).setParameter("roleId", roleId).executeUpdate();
 				if (logger.isDebugEnabled()) {
 					logger.debug("Insert user_context_var, row get updated : [" + row + "]");
 				}
@@ -141,7 +140,7 @@ public class UserDetailServiceImpl implements UserDetailService {
 			// the hibernate intercepter will not update the UPDDATE and UPDUSER
 			// column,
 			// therefore we need to update manually
-			sql.append("UPDATE User SET upddate = :upddate, upduser = id");
+			sql.append("UPDATE app_user SET upddate = :upddate, upduser = id");
 			parameters.put("upddate", new Timestamp(System.currentTimeMillis()));
 
 			if (e == null) {
@@ -170,7 +169,7 @@ public class UserDetailServiceImpl implements UserDetailService {
 
 			try {
 				Session session = sessionFactory.getCurrentSession();
-				Query<Object[]> query = session.createQuery(sql.toString());
+				Query<Object[]> query = session.createNativeQuery(sql.toString());
 				//
 				// Set query parameter values
 				//
@@ -201,7 +200,7 @@ public class UserDetailServiceImpl implements UserDetailService {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 			StringBuffer sql = new StringBuffer();
 
-			sql.append("UPDATE User SET upddate = :upddate, upduser = :id, connected_flag = :connected_flag")
+			sql.append("UPDATE app_user SET upddate = :upddate, upduser = :id, connected_flag = :connected_flag")
 					.append(", session_id = null where id = :id");
 			parameters.put("upddate", new Timestamp(System.currentTimeMillis()));
 			parameters.put("connected_flag", Boolean.FALSE);
@@ -209,7 +208,7 @@ public class UserDetailServiceImpl implements UserDetailService {
 
 			try {
 				Session session = sessionFactory.getCurrentSession();
-				Query<Object[]> query = session.createQuery(sql.toString());
+				Query<Object[]> query = session.createNativeQuery(sql.toString());
 				//
 				// Set query parameter values
 				//
@@ -239,7 +238,7 @@ public class UserDetailServiceImpl implements UserDetailService {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		StringBuffer sql = new StringBuffer();
 
-		sql.append("UPDATE User SET upddate = :upddate, connected_flag = :connected_flag")
+		sql.append("UPDATE app_user SET upddate = :upddate, connected_flag = :connected_flag")
 				.append(", session_id = null where session_id = :session_id");
 		parameters.put("upddate", new Timestamp(System.currentTimeMillis()));
 		parameters.put("connected_flag", Boolean.FALSE);
@@ -247,7 +246,7 @@ public class UserDetailServiceImpl implements UserDetailService {
 
 		try {
 			Session session = sessionFactory.getCurrentSession();
-			Query<Object[]> query = session.createQuery(sql.toString());
+			Query<Object[]> query = session.createNativeQuery(sql.toString());
 			//
 			// Set query parameter values
 			//

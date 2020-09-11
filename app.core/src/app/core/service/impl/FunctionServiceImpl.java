@@ -17,6 +17,7 @@ import app.core.registry.Module;
 import app.core.service.FunctionService;
 
 @Service
+@SuppressWarnings("unchecked")
 public class FunctionServiceImpl implements FunctionService {
 	private static final Logger logger = LoggerFactory.getLogger(FunctionServiceImpl.class);
 
@@ -78,13 +79,12 @@ public class FunctionServiceImpl implements FunctionService {
 		sql.append("FROM role_function rf");
 		sql.append(" INNER JOIN app_function f");
 		sql.append("  ON rf.function_code = f.code ");
-		sql.append("WHERE rf.role_id = ?");
-		sql.append(" AND f.path like ? ");
+		sql.append("WHERE rf.role_id = :roleId");
+		sql.append(" AND f.path like :code ");
 
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery(sql.toString()).setParameter(0, roleId).setParameter(1, path);
-		@SuppressWarnings("rawtypes")
-		List result = query.list();
+		Query<String> query = session.createNativeQuery(sql.toString()).setParameter("roleId", roleId).setParameter("code", path);
+		List<String> result = query.list();
 		if (result != null && result.size() > 0) {
 			return true;
 		}
@@ -99,13 +99,12 @@ public class FunctionServiceImpl implements FunctionService {
 		sql.append("FROM role_function rf");
 		sql.append(" INNER JOIN app_function f");
 		sql.append("  ON rf.function_code = f.code ");
-		sql.append("WHERE rf.role_id = ?");
-		sql.append(" AND f.code = ?");
+		sql.append("WHERE rf.role_id = :roleId");
+		sql.append(" AND f.code = :code");
 
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery(sql.toString()).setParameter(0, roleId).setParameter(1, code);
-		@SuppressWarnings("rawtypes")
-		List result = query.list();
+		Query<String> query = session.createNativeQuery(sql.toString()).setParameter("roleId", roleId).setParameter("code", code);
+		List<String> result = query.list();
 		if (result != null && result.size() > 0) {
 			return true;
 		}

@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +25,7 @@ import app.core.security.UserPrincipal;
 import app.core.service.MenuService;
 
 @Service
+@SuppressWarnings("unchecked")
 public class MenuServiceImpl implements MenuService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MenuServiceImpl.class);
@@ -39,22 +40,21 @@ public class MenuServiceImpl implements MenuService {
 	public void getMenu(UserPrincipal userPrincipal, Locale locale) {
 		if (userPrincipal != null) {
 			StringBuffer sql = new StringBuffer();
-			sql.append("SELECT TBL.id, TBL.parentMenuItem, TBL.name, TBL.path ");
+			sql.append("SELECT TBL.id, TBL.parent_id, TBL.name, TBL.path ");
 			sql.append(
-					"FROM (SELECT m.id, m.parentMenuItem, m.name, m.parentFlag, m.sortOrder, null AS path, null AS role_id");
-			sql.append(" FROM MENU_ITEM m WHERE m.function IS NULL");
+					"FROM (SELECT m.id, m.parent_id, m.name, m.parent_flag, m.sort_order, null AS path, null AS role_id");
+			sql.append(" FROM MENU_ITEM m WHERE m.function_code IS NULL");
 			sql.append(" UNION");
-			sql.append(" SELECT m.id, m.parentMenuItem, m.name, m.parentFlag, m.sortOrder, f.path, r.role_id");
-			sql.append(" FROM menu_item m LEFT JOIN app_function f ON m.function = f.code");
-			sql.append(" INNER JOIN ROLE_FUNCTION r ON r.function = f.code");
-			sql.append(" WHERE r.role_id = ?) AS TBL ");
-			sql.append("WHERE TBL.parentMenuItem IS NOT NULL ");
-			sql.append("ORDER BY TBL.parentMenuItem, TBL.sortOrder");
+			sql.append(" SELECT m.id, m.parent_id, m.name, m.parent_flag, m.sort_order, f.path, r.role_id");
+			sql.append(" FROM menu_item m LEFT JOIN app_function f ON m.function_code = f.code");
+			sql.append(" INNER JOIN ROLE_FUNCTION r ON r.FUNCTION_CODE = f.code");
+			sql.append(" WHERE r.role_id = :currentRoleId) AS TBL ");
+			sql.append("WHERE TBL.parent_id IS NOT NULL ");
+			sql.append("ORDER BY TBL.parent_id, TBL.sort_order");
 
 			Session session = sessionFactory.getCurrentSession();
-			Query query = session.createQuery(sql.toString()).setParameter(0,
+			Query<Object[]> query = session.createNativeQuery(sql.toString()).setParameter("currentRoleId",
 					new Long(String.valueOf(userPrincipal.getCurrentRoleId())));
-			@SuppressWarnings("unchecked")
 			List<Object[]> result = query.list();
 
 			String menu = "";
