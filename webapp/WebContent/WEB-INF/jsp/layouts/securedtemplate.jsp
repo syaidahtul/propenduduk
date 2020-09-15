@@ -77,7 +77,7 @@ $(document).ready(function() {
 						<a id="logout" href="#">
 							<span class="glyphicon glyphicon-log-out"></span> <spring:message code="menu.logout" />
 						</a>
-						<form method="post" id="logoutForm" action="<spring:url value="/logout" />">
+						<form method="post" id="logoutForm" action="<spring:url value="/s3pid/logout" />">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						</form>
 					</li>					

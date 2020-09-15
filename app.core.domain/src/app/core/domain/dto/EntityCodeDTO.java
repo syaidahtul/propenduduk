@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter(value = AccessLevel.PUBLIC)
 @Setter(value = AccessLevel.PUBLIC)
 @NoArgsConstructor
-public class StateDTO implements Serializable {
+public class EntityCodeDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
